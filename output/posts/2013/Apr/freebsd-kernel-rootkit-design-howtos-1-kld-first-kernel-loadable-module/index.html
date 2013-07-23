@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+				<title>Raging Scholars &mdash; FreeBSD Kernel Rootkit Design Howtos 1 KLD First Kernel Loadable Module</title>
+		<meta charset="utf-8" />
+		<link rel="profile" href="http://gmpg.org/xfn/11" />
+		<link rel="stylesheet" type="text/css" href="../../../../theme/css/style.css" />
+		<link rel='stylesheet' id='oswald-css'  href='http://fonts.googleapis.com/css?family=Oswald&#038;ver=3.3.2' type='text/css' media='all' />
+		<style type="text/css">
+			body.custom-background { background-color: #f5f5f5; }
+		</style>
+		<link rel="alternate" type="application/atom+xml"
+			title="Raging Scholars — Flux Atom"
+			href="../../../../" /> 
+				<!--[if lte IE 8]><script src="../../../../theme/js/html5shiv.js"></script><![endif]-->
+				</head>
+
+<body class="home blog custom-background " >
+	<div id="container">
+		<div id="header">
+				<h1 id="site-title"><a href="../../../..">Raging Scholars</a></h1>
+				<h2 id="site-description">uprintf('There is no place like ::1');</h2>		</div><!-- /#banner -->
+		
+		<div id="menu">
+			<div class="menu-navigation-container">
+				<ul id="menu-navigation" class="menu">
+										  						<li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="../../../../pages/about-me.html">About Me</a></li>
+					  										  						<li class="active" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="../../../../category/code.html">Code!</a></li>
+					  						<li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="../../../../category/misc.html">Misc!</a></li>
+					  															  						<li  class="active" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="http://www.hailang.me">HOME</a></li>
+					  					
+				</ul>
+			</div> <!--/#menu-navigation-container-->
+		</div><!-- /#menu -->
+		
+		<div class="page-title">
+					</div>
+	
+		<div id="contents">
+			
+<div class="post type-post status-publish format-standard hentry category-general" id="post">
+	<div class="entry-meta">
+		<div class="date"><a href="../../../../posts/2013/Apr/freebsd-kernel-rootkit-design-howtos-1-kld-first-kernel-loadable-module/">Apr 16 2013</a></div>
+				<span class="byline">By <a href="../../../../author/hai-lang.html">Hai Lang</a></span>
+							<div class="comments"><a href="../../../../posts/2013/Apr/freebsd-kernel-rootkit-design-howtos-1-kld-first-kernel-loadable-module/#disqus_thread" title="Comment on FreeBSD Kernel Rootkit Design Howtos 1 KLD First Kernel Loadable Module">comments</a></div>
+							<span class="cat-links"><a href="../../../../category/code.html" title="View all posts in Code!" rel="category tag">Code!</a></span>
+			</div> <!-- /#entry-meta -->
+	<div class="main">
+		<h2 class="entry-title">
+			<a href="../../../../posts/2013/Apr/freebsd-kernel-rootkit-design-howtos-1-kld-first-kernel-loadable-module/" title="Permalink to FreeBSD Kernel Rootkit Design Howtos 1 KLD First Kernel Loadable Module" rel="bookmark">FreeBSD Kernel Rootkit Design Howtos 1 KLD First Kernel Loadable Module</a>
+		</h2>
+		<div class="entry-content">
+			<p>Needless to say that the first thing you need to start FreeBSD kernel rootkit development is a FreeBSD box.
+There are plenty of installation guides on the Internet about FreeBSD installation,
+so that I'll just skip this part for the sake of simplicity.</p>
+<p>And FYI, basically you are free to choose any hardware to run FreeBSD as long as it's supported.
+You can even install your FreeBSD as a virtual machine.
+10GB hard drive, at least 512MB memory with any modern CPU will do.</p>
+<div class="section" id="the-environment">
+<h2>The Environment</h2>
+<p>The version of FreeBSD I'm going to use throughout this howtos is FreeBSD 9 Stable,
+it is recommended that you install at least FreeBSD 9 Release although I believe code examples in this howtos
+are able to run on most of versions after FreeBSD 6.2</p>
+<div class="highlight"><pre>myBSD# uname -a
+FreeBSD myBSD 9.0-STABLE FreeBSD 9.0-STABLE <span class="c">#0: Thu Mar  8 14:16:25 CST 2012 bestwc@myBSD:/usr/obj/usr/src/sys/GENERIC  amd64</span>
+</pre></div>
+</div>
+<div class="section" id="package-installation">
+<h2>Package Installation</h2>
+<p>You'll need the FreeBSD source tree to compile your kernel rootkit,
+be sure to install it because it is not included in minimal installation.
+You can do this by two ways, the first is to enable src distribution option during installation,
+and the recommended way is to perform the following command.</p>
+<div class="highlight"><pre>myBSD# cp /usr/share/examples/cvsup/stable-supfile /root <span class="o">&amp;&amp;</span> <span class="nb">cd</span> /root
+myBSD# ee stable-supfile
+<span class="o">=================================</span>
+*default <span class="nv">host</span><span class="o">=</span>CHANGE_THIS.FreeBSD.org <span class="c">###Change this line</span>
+*default <span class="nv">host</span><span class="o">=</span>cvsup.FreeBSD.org <span class="c">###To this</span>
+<span class="o">=================================</span>
+myBSD# csup -g -L2 stable-supfile
+</pre></div>
+<p>This will sync the source tree on your local file system to the latest one from remote repository,
+and this will simply download the latest for you if you don't already have the source tree.
+It is recommended to run the cusp command shown above to frequently update your source tree,
+for this will make sure your are developing rootkit with the newest kernel source code,
+and potentially make it more compatible with new FreeBSD releases.</p>
+<p>To examine if you have the src tree on your local box, type the following command:</p>
+<div class="highlight"><pre>myBSD# ls /usr/src
+COPYRIGHT       ObsoleteFiles.inc       crypto          lib         share
+LOCKS           README      etc         libexec         sys
+MAINTAINERS     UPDATING    games       release         tools
+Makefile        bin         gnu         rescue          usr.bin
+Makefile.inc1   cddl        include     sbin            usr.sbin
+Makefile.mips   contrib     kerberos5   secure
+</pre></div>
+</div>
+<div class="section" id="the-dynamic-kernel-linker-kld">
+<h2>The Dynamic Kernel Linker (KLD)</h2>
+<p>The Dynamic Kernel Linker (KLD) is a facility in FreeBSD that allows users
+to interact with the system kernel by dynamically loading or unloading kernel modules.
+It may sounds strange to you, but believe it or not that you have utilized KLD multiple times
+during daily operations on your FreeBSD box. The KLD gets called every time you plug in or plug out a device,
+or by manually typing kldload or kldunload commands.
+It is especially useful to device driver developers as they can dynamically load
+their drivers as kernel module and test the functionalities on the fly without rebooting the system.
+For more information on the KLD, please refer to the <a class="reference external" href="http://www.freebsd.org/doc/en/books/arch-handbook/driverbasics-kld.html">FreeBSD Handbook</a></p>
+<p>The KLD provides a high way for us to put our code into the running kernel space
+without recompiling as long as we have the required privilege.
+So that, if we have our kernel rootkit compiled as loadable kernel module,
+then we'll theoretically be able to load that module in any FreeBSD machines on the fly.</p>
+<p>Although the KLD interface is not the only way for people to interact with kernel,
+but is undoubtedly the easiest and probably the fastest way to do that.
+The only question is, will there be any compatibility issues if we stick to KLD interface?</p>
+<blockquote class="pull-quote">
+In FreeBSD 3.0, substantial changes were made to the kernel module subsystem, and the LKM Facility was renamed the Dynamic Kernel Linker (KLD) Facility. Subsequently, the term KLD is commonly used to describe LKMs under FreeBSD.</blockquote>
+<p>According to the quote above from <a class="reference external" href="http://www.amazon.com/gp/product/B002MZAR6I/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;tag=imhala-20&amp;linkCode=as2&amp;camp=217145&amp;creative=399373&amp;creativeASIN=B002MZAR6I">Designing BSD Rootkits: An Introduction to Kernel Hacking</a> by Joseph Kong,
+the KLD interface hasn't been changed since FreeBSD 3.0,
+which means our yet-to-be-done rootkit should be able to run on any (not always true) modern FreeBSD systems
+without any (not always true as well) modification.</p>
+<p>Just incase that you haven't realized this,
+<strong>we are going to use KLD interfaces a lot in this tutorial.</strong>
+Now let's get to know the KLD interface more.</p>
+</div>
+<div class="section" id="the-module-event-handler">
+<h2>The Module Event Handler</h2>
+<p>When you load or unload any kernel modules to or from the current running kernel,
+the KLD interface will perform some pre-defined routines to prepare the system.
+This is called the Module Event Handler, it should be present in every(!) kernel module
+to handle the initialization and shutdown processes. This handler gets called every time
+when the code enters or exits kernel space.</p>
+<p>(!) Just keep in mind that this isn't always true, as what the quote says below from
+<a class="reference external" href="http://www.amazon.com/gp/product/B002MZAR6I/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;tag=imhala-20&amp;linkCode=as2&amp;camp=217145&amp;creative=399373&amp;creativeASIN=B002MZAR6I">Designing BSD Rootkits: An Introduction to Kernel Hacking</a></p>
+<blockquote class="pull-quote">
+Actually, this isn't entirely true. You can have a KLD that just includes a sysctl. You can also dispense with module handlers if you wish and just use SYSINIT and SYSUNINIT directly to register functions to be invoked on load and unload, respectively. You can't, however, indicate failure in those.</blockquote>
+<p>The prototype of the module event handler is defined in sys/module.h and it is called modeventhand_t</p>
+<div class="highlight"><pre><span class="nl">FILE:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">module</span><span class="p">.</span><span class="n">h</span>
+
+<span class="n">myBSD</span><span class="err">#</span> <span class="n">cat</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">module</span><span class="p">.</span><span class="n">h</span> <span class="o">|</span> <span class="n">grep</span> <span class="kt">modeventhand_t</span>
+<span class="k">typedef</span> <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="kt">modeventhand_t</span><span class="p">)(</span><span class="kt">module_t</span><span class="p">,</span> <span class="kt">int</span> <span class="cm">/* modeventtype_t */</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">);</span>
+</pre></div>
+<p>The module_t is a pointer to the moduleu2019s struct as defined in the same file.</p>
+<div class="highlight"><pre><span class="nl">FILE:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">module</span><span class="p">.</span><span class="n">h</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">module</span> <span class="o">*</span><span class="kt">module_t</span><span class="p">;</span>
+</pre></div>
+<p>The modeventtype_t on the other hand is an enumerated type of event types defined in the same file as well.</p>
+<div class="highlight"><pre><span class="nl">FILE:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">module</span><span class="p">.</span><span class="n">h</span>
+
+<span class="k">typedef</span> <span class="k">enum</span> <span class="n">modeventtype</span> <span class="p">{</span>
+        <span class="n">MOD_LOAD</span><span class="p">,</span>    <span class="cm">/* Set when module is loaded. */</span>
+        <span class="n">MOD_UNLOAD</span><span class="p">,</span>    <span class="cm">/* Set when module is unloaded. */</span>
+        <span class="n">MOD_SHUTDOWN</span><span class="p">,</span>    <span class="cm">/* Set on shutdown. */</span>
+        <span class="n">MOD_QUIESCE</span>    <span class="cm">/* Set on quiesce. */</span>
+<span class="p">}</span> <span class="kt">modeventtype_t</span><span class="p">;</span>
+</pre></div>
+<p>With all these information, we can now try to define a simple module event handler.
+Here is a simple event handler function called load, which displays Hello, world! when it's loaded,
+and print Good-bye, cruel world! when it's unloaded.</p>
+<div class="highlight"><pre><span class="k">static</span> <span class="kt">int</span> <span class="nf">load</span><span class="p">(</span><span class="k">struct</span> <span class="n">module</span> <span class="o">*</span><span class="n">module</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cmd</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">error</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">switch</span> <span class="p">(</span><span class="n">cmd</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">MOD_LOAD</span>:
+        <span class="n">uprintf</span><span class="p">(</span><span class="s">&quot;Hello, world!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="k">case</span> <span class="n">MOD_UNLOAD</span>:
+        <span class="n">uprintf</span><span class="p">(</span><span class="s">&quot;Good-bye, cruel world!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">break</span><span class="p">;</span>
+
+    <span class="nl">default:</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">EOPNOTSUPP</span><span class="p">;</span> <span class="c1">//EOPNOTSUPP stands for Error: Operation not supported.</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">error</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+<p>It's perfectly safe if this code doesn't make much sense to you, as we will get back later.
+However, what you do need to understand is the prototype of defining a module event handler.</p>
+<p>This code snippet should present in your first loadable kernel module,
+and perform pre-defined routines according to the cmd sent by the kernel accordingly.</p>
+<p>Consider this to be a protocol between your module and the kernel,
+which basically says
+<strong>&quot;Oh the user asked you to unload me? Hold on and let me check my event handler,
+alright, I'll print Good-bye, cruel world! and then go away.&quot;</strong></p>
+</div>
+<div class="section" id="the-declare-module-macro">
+<h2>The DECLARE_MODULE Macro</h2>
+<p>It's time to get back to our module declaration.</p>
+<p>We now know module_t is a pointer to the module structure,
+but what on earth is a module and how do we define it?
+The thing is, we must let KLD know the basic information about our module,
+and it should register itself with kernel when it loads.
+This process can be awfully long and complicated,
+lucky that we have a pre-defined macro in sys/module.h that just does this to help us.</p>
+</div>
+
+		</div> <!--/#entry-content-->
+		    		<span class="tag-links"><strong>Tagged</strong>
+    			    			 <a href="../../../../tag/rootkit.html" rel="tag">rootkit</a>,  <a href="../../../../tag/freebsd.html" rel="tag">freebsd</a>    		</span>
+    		</div> <!--/#main-->
+</div>  <!--/#post-->
+	<div id="comments">
+		<div id="respond">
+			<div id="disqus_thread"></div>
+	        <script type="text/javascript">
+	            var disqus_shortname = 'ragingscholars';
+	
+	            /* * * DON'T EDIT BELOW THIS LINE * * */
+	            (function() {
+	                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	            })();
+	        </script>
+	        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+		</div><!-- #respond -->					
+</div><!-- #comments -->
+
+		</div>
+		
+		<div id="footer">
+			<p><b>Powered by <a href='http://getpelican.com'>Pelican</a> Theme by <a href='http://bunnyman.info'>tBunnyMan</a></b></p>
+							<script type="text/javascript">
+					var _gaq = _gaq || [];
+					_gaq.push(['_setAccount', 'UA-12039368-4']);
+					_gaq.push(['_trackPageview']);
+					(function() {
+						var ga = document.createElement('script'); 
+						ga.type = 'text/javascript'; ga.async = true;
+						ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+						var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+					})();
+				</script>
+										<script type="text/javascript">
+    var disqus_shortname = 'ragingscholars';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>					</div><!-- /#footer -->
+	</div><!-- /#container -->
+	<div style="display:none"></div>
+</body>
+</html>
