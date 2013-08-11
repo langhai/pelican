@@ -35,11 +35,11 @@ FEED_DOMAIN = 'http://feed.hailang.me'
 THEME = "gum"
 ###Theme Specific Settings####
 DEFAULT_DATE_FORMAT = ('%b %d %Y')
-SITESUBTITLE = "uprintf(\'There is no place like ::1\\n\');"
+SITESUBTITLE = "uprintf(\"There is no place like ::1\\n\");"
 #SINGLE_AUTHOR = False
 #MINT = False
 DISQUS_SITENAME = 'ragingscholars'
-#GOOGLE_ANALYTICS = 'UA-12039368-4'
+GOOGLE_ANALYTICS = 'UA-12039368-4'
 GOOGLE_ANALYTICS_ID = 'UA-12039368-4'
 GOOGLE_ANALYTICS_SITENAME = 'hailang.me'
 ###Social Settings####

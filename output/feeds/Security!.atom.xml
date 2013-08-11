@@ -5,7 +5,7 @@
 Happy Birthday FreeBSD! Now you are 20 years old and your security is the same as 20 years ago... :)
 -- Hunger &amp;lt;&lt;a class="reference external" href="mailto:hunger&amp;#64;hunger.hu"&gt;hunger&amp;#64;hunger.hu&lt;/a&gt;&amp;gt;&lt;/blockquote&gt;
 &lt;p&gt;Saw this little birthday gift this morning from &lt;a class="reference external" href="http://seclists.org/fulldisclosure/2013/Jun/161"&gt;Full Disclosure&lt;/a&gt;. Works on my FreeBSD VM. Here's a screenshot.&lt;/p&gt;
-&lt;img alt="|filename|images/mmap_exploit.png" class="align-left" src="www.hailang.me/static/images/mmap_exploit.png" style="width: 608.0px; height: 178.0px;" /&gt;
+&lt;img alt="|filename|../images/mmap_exploit.png" class="align-left" src="www.hailang.me/static/images/mmap_exploit.png" style="width: 608.0px; height: 178.0px;" /&gt;
 &lt;p&gt;And here's the exploit code&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cm"&gt;/*&lt;/span&gt;
 &lt;span class="cm"&gt; * FreeBSD 9.{0,1} mmap/ptrace exploit&lt;/span&gt;
