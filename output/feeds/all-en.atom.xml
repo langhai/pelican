@@ -63,7 +63,7 @@ the index &lt;em&gt;len(x) - 4&lt;/em&gt;&lt;/p&gt;
             &lt;span class="n"&gt;max_product&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;product&lt;/span&gt;
     &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;max_product&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Very straight-forward code. Taken from &lt;a class="reference external" href="http://pastebin.com/EChYbEic"&gt;pastbin&lt;/a&gt; and modified a little bit.
+&lt;p&gt;Very straight-forward code. Taken from &lt;a class="reference external" href="http://pastebin.com/EChYbEic"&gt;pastebin&lt;/a&gt; and modified a little bit.
 Of course there are simpler and more pythonic ways, but since
 this is a simple question, I'll just be lazy and ignore the possible ugliness of
 this code.&lt;/p&gt;
