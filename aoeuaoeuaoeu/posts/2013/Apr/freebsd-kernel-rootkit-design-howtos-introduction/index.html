@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        
+        <title>FreeBSD Kernel Rootkit Design Howtos - Introduction</title>
+        <meta charset="utf-8" />
+                <link href="http://feed.hailang.me/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Raging Scholars Full Atom Feed" />
+                                                <link href="http://feed.hailang.me/feeds/security.atom.xml" type="application/atom+xml" rel="alternate" title="Raging Scholars Categories Atom Feed" />
+                                
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="../../../../theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../theme/pygment.css" />
+
+        <script src="../../../../theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+                        <script>
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-12039368-4', 'hailang.me');
+                ga('send', 'pageview');
+
+              </script>
+          
+
+
+
+        </head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+              <h1><a href="../../../..">Raging Scholars <strong>uprintf("There is no place like ::1\n");</strong></a></h1>
+              <!---
+              <h1><a href="../../../.."><strong>Raging Scholars</strong></a></h1>
+              <h4><font color=grey>uprintf("There is no place like ::1\n");</font></h4>
+              -->
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="../../../..">Home</a></li>
+
+                        <!-- Display Categories -->
+                                          <li><a href="../../../../category/code.html">Code!</a></li>
+                              <li><a href="../../../../category/misc.html">Misc!</a></li>
+                              <li class="active"><a href="../../../../category/security.html">Security!</a></li>
+                                      <!-- Display Pages -->
+                                          <li><a href="../../../../pages/about-me.html">About Me</a></li>
+                          
+              </ul>
+            </div>
+
+          <section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="../../../../posts/2013/Apr/freebsd-kernel-rootkit-design-howtos-introduction/" rel="bookmark"
+                   title="Permalink to FreeBSD Kernel Rootkit Design Howtos - Introduction">FreeBSD Kernel Rootkit Design Howtos - Introduction</a></h2>
+                      
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2013-04-16T00:00:00">
+                Apr 16 2013
+              </abbr>
+                            <address class="vcard author">
+                By <a class="url fn" href="../../../../author/hai-lang.html">Hai Lang</a>
+              </address>
+                          </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <div class="section" id="background">
+<h2>Background</h2>
+<p>I actually wanted to write this howto together with my college final year project synchronously,
+but sadly things didn't work out the way i expected.
+It took me almost a year to reach this point of rewriting most of them to make them more like tutorials
+other than academic class notes.</p>
+<p>Anyway, here I am, writing this intro again, hoping that I can finally finish it sometime soon.</p>
+<p>As I said that FreeBSD Kernel Rootkit Design and Defense Techniques is the title of my college final year project,
+I chose this topic because my lecturer who I consulted with obviously thinks this one can help me
+at applying master degree in malicious software analysis.</p>
+<p>I myself have no interest in pursuing master degree in malicious software analysis,
+but it sure sounds cool to me to create my very own rootkit, especially on my favorite platform, FreeBSD.</p>
+<p>I still remember the lecturer asked me why I wanna make it on FreeBSD instead of Linux,
+well, there are two reasons.</p>
+<ul class="simple">
+<li>I'm more familiar with FreeBSD than Linux</li>
+<li>I don't see any recent and public accessible rootkit for FreeBSD</li>
+</ul>
+<p>Furthermore, there is another secret weapon to make my life even easier,
+<a class="reference external" href="http://www.amazon.com/gp/product/B002MZAR6I/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;tag=imhala-20&amp;linkCode=as2&amp;camp=217145&amp;creative=399373&amp;creativeASIN=B002MZAR6I">Designing BSD Rootkits: An Introduction to Kernel Hacking</a> by Joseph Kong.
+I highly recommend you guys to grab a copy of this book.
+It's good, and it's the only book on FreeBSD kernel rootkit design as far as I know,
+so you kinda have no choice here.</p>
+<p>There's another nice book to start with,
+<a class="reference external" href="http://www.amazon.com/gp/product/0201702452/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;tag=imhala-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0201702452">The Design and Implementation of the FreeBSD Operating System</a> By Marshall Kirk McKusick and George V. Neville-Neil.
+As the book name suggests, it can give you a detailed understanding of FreeBSD kernel.
+Get a copy of this book, read the first few chapters to get a rough understanding
+and use it as a reference book later on when you work on specific modules of the kernel.</p>
+</div>
+<div class="section" id="what-to-expect">
+<h2>What to Expect</h2>
+<p><a class="reference external" href="http://www.amazon.com/gp/product/B002MZAR6I/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;tag=imhala-20&amp;linkCode=as2&amp;camp=217145&amp;creative=399373&amp;creativeASIN=B002MZAR6I">Designing BSD Rootkits: An Introduction to Kernel Hacking</a> by Joseph Kong
+is somehow sufficient for lots of people to kickstart their own rootkit,
+but you have to be familiar with modern system kernels and have some experiences in working in C.</p>
+<p>I find this book a little bit rushy, what the author did was to drag you through lots of kernel terminologies
+and then give you lots of code snippets that, I myself at least, couldn't understand until
+read them for multiple times.</p>
+<p><a class="reference external" href="http://www.amazon.com/gp/product/0201702452/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;tag=imhala-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0201702452">The Design and Implementation of the FreeBSD Operating System</a> By Marshall Kirk McKusick and George V. Neville-Neil
+on the other hand, discusses overall FreeBSD kernel implementation and as well as each major kernel modules
+in detail, but the only drawback is that it doesn't talk much about rootkit techniques,
+it only concentrates on normal kernel development.</p>
+<p>So that's why I wrote this series on FreeBSD Kernel Rootkit Design,
+it combines what I have learned, and what I think is useful from all those books and online resources.
+I also improved some of the examples from Joseph Kong's book,
+filled in all related information which were omitted by the author.</p>
+<p>Consider this as a tutorial series. If you are looking for a quick and comprehensive
+from novice to advanced novice guide on writing FreeBSD Kernel Rookits, then congratulations,
+this is just right for you.</p>
+</div>
+<div class="section" id="table-of-contents">
+<h2>Table of Contents</h2>
+<p>Here's a list of the tutorials, feel free to jump to any one that interests you.</p>
+<ul class="simple">
+<li><a class="reference external" href="http://old.hailang.me/2012/06/08/freebsd-kernel-rootkit-design-howtos---1---kld-first-kernel-loadable-module/">FreeBSD Kernel Rootkit Design Howtos 1 KLD First Kernel Loadable Module</a></li>
+<li><a class="reference external" href="http://old.hailang.me/2012/06/09/freebsd-kernel-rootkit-design-howtos---2---system-call-first-kernel-service-module/">FreeBSD Kernel Rootkit Design Howtos 2 System Call First Kernel Service Module</a></li>
+<li><a class="reference external" href="http://old.hailang.me/2012/06/09/freebsd-kernel-rootkit-design-howtos---3---system-call-first-kernel-service-application/http://old.hailang.me/2012/06/09/freebsd-kernel-rootkit-design-howtos---3---system-call-first-kernel-service-application/">FreeBSD Kernel Rootkit Design Howtos 3 System Call First Kernel Service Application</a></li>
+<li><a class="reference external" href="http://old.hailang.me/2012/06/10/freebsd-kernel-rootkit-design-howtos---4---kernel-and-user-space-transitions/">FreeBSD Kernel Rootkit Design Howtos 4 Kerenl and User Space Transitions</a></li>
+<li><a class="reference external" href="http://old.hailang.me/2012/06/19/freebsd-kernel-rootkit-design-howtos---5---character-device-first-cdev-module/">FreeBSD Kernel Rootkit Design Howtos 5 Character Device First cdev Modlue</a></li>
+<li><a class="reference external" href="#">FreeBSD Kernel Rootkit Design Howtos 6 Character Device First cdev Application</a></li>
+<li><a class="reference external" href="#">FreeBSD Kernel Rootkit Design Howtos 7 Linker Files and Chapter Summary</a></li>
+<li><a class="reference external" href="#">FreeBSD Kernel Rootkit Design Howtos 8 System Call Hook and mkdir_hook Example</a></li>
+<li><a class="reference external" href="#">FreeBSD Kernel Rootkit Design Howtos 9 Hook Kernel Process Tracking and rmdir_hook Example</a></li>
+</ul>
+</div>
+
+            </div><!-- /.entry-content -->
+                        <div class="comments">
+              <h3>Comments</h3>
+              <div id="disqus_thread"></div>
+              <script type="text/javascript">
+                var disqus_identifier = "posts/2013/Apr/freebsd-kernel-rootkit-design-howtos-introduction/";
+                (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://ragingscholars.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+              </script>
+            </div>
+            
+
+        </div><!-- /.eleven.columns -->
+        
+     <div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+              <li><a href="../../../../pages/about-me.html">About Me</a></li>
+        </ul>
+
+<h4>Categories</h4>
+<ul>
+			<li><a href="../../../../category/code.html">Code!</a></li>
+			<li><a href="../../../../category/misc.html">Misc!</a></li>
+			<li><a href="../../../../category/security.html">Security!</a></li>
+	</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+		    <li class="tag-1"><a href="../../../../tag/algorithm.html">algorithm</a></li>
+		    <li class="tag-3"><a href="../../../../tag/misc.html">misc</a></li>
+		    <li class="tag-4"><a href="../../../../tag/rst.html">rst</a></li>
+		    <li class="tag-4"><a href="../../../../tag/rootkit.html">rootkit</a></li>
+		    <li class="tag-3"><a href="../../../../tag/security.html">security</a></li>
+		    <li class="tag-1"><a href="../../../../tag/math.html">math</a></li>
+		    <li class="tag-4"><a href="../../../../tag/pelican.html">pelican</a></li>
+		    <li class="tag-4"><a href="../../../../tag/.html"></a></li>
+		    <li class="tag-1"><a href="../../../../tag/project-euler.html">project euler</a></li>
+		    <li class="tag-3"><a href="../../../../tag/freebsd.html">freebsd</a></li>
+		    <li class="tag-1"><a href="../../../../tag/python.html">python</a></li>
+	</ul>
+
+
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>
+                    <br />
+                    All contents on this website are under 
+                    <a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">
+                        Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+                                <li><div class="btn info"><a href="http://www.weibo.com/bestwc" target="_blank">新浪微博</a></div></li>
+                
+                                <li><div class="btn danger"><a href="https://plus.google.com/100640905756801185675/posts/p/pub" target="_blank">Google+</a></div></li>
+                
+                                <li><div class="btn facebook"><a href="http://www.facebook.com/bestwc" target="_blank">Facebook</a></div></li>
+                
+                                <li><div class="btn twitter"><a href="https://twitter.com/lang_hai" target="_blank">Twitter</a></div></li>
+                
+                                <li><div class="btn primary"><a href="https://github.com/langhai" target="_blank">Github</a></div></li>
+                
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'ragingscholars';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  <script src="../../../../theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="../../../../theme/js/libs/gumby.min.js"></script>
+  <script src="../../../../theme/js/plugins.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        
+        <title>Largest Prime Factor</title>
+        <meta charset="utf-8" />
+                <link href="http://feed.hailang.me/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Raging Scholars Full Atom Feed" />
+                                                <link href="http://feed.hailang.me/feeds/code.atom.xml" type="application/atom+xml" rel="alternate" title="Raging Scholars Categories Atom Feed" />
+                                
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="../../../../theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../theme/pygment.css" />
+
+        <script src="../../../../theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+                        <script>
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-12039368-4', 'hailang.me');
+                ga('send', 'pageview');
+
+              </script>
+          
+
+
+
+        </head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+              <h1><a href="../../../..">Raging Scholars <strong>uprintf("There is no place like ::1\n");</strong></a></h1>
+              <!---
+              <h1><a href="../../../.."><strong>Raging Scholars</strong></a></h1>
+              <h4><font color=grey>uprintf("There is no place like ::1\n");</font></h4>
+              -->
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="../../../..">Home</a></li>
+
+                        <!-- Display Categories -->
+                                          <li class="active"><a href="../../../../category/code.html">Code!</a></li>
+                              <li><a href="../../../../category/misc.html">Misc!</a></li>
+                              <li><a href="../../../../category/security.html">Security!</a></li>
+                                      <!-- Display Pages -->
+                                          <li><a href="../../../../pages/about-me.html">About Me</a></li>
+                          
+              </ul>
+            </div>
+
+          <section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="../../../../posts/2013/Feb/largest-prime-factor/" rel="bookmark"
+                   title="Permalink to Largest Prime Factor">Largest Prime Factor</a></h2>
+                      
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2013-02-01T00:00:00">
+                Feb 01 2013
+              </abbr>
+                            <address class="vcard author">
+                By <a class="url fn" href="../../../../author/hai-lang.html">Hai Lang</a>
+              </address>
+                          </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <blockquote class="highlights">
+Third question from Project Euler, finding the largest factor of a prime number.</blockquote>
+<p>Great, I've actually been researching in prime numebrs recently.
+Got this crazy idea, or a hypotheses few month ago,
+but never had the time to prove it.
+I spent days trying to figure out better way to generate prime numbers, since my
+crazy theory involves large primes, I mean, really large ones...
+Anyway, turns out it's indeed just a crazy thought, not worth mentioning.</p>
+<p>Get back to the topic. <a class="reference external" href="http://projecteuler.net/problem=3">Problem 3</a> asks to find the lagest prime factors of the number
+600851475143. Not a large number to be frank. So I'll stick simplest factorization
+algorithm for this particular question.</p>
+<p>I guess I'll write a review on more complex factorization algorithms, those that are used
+to factor large prime numbers in number theory and cryptograhy. Will get back and put
+the link here if you are interested to know more.</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">prime_factorization</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">while</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">/=</span> <span class="n">x</span>
+            <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">factors</span>
+</pre></div>
+<p>This is like a brute-force algorithm, put x in the factors list if n is divisible by x,
+then divide n by x before next iteration. If n cannot be divided by x, then increase the
+value of x by 1.</p>
+<p>Then I can just do this to get the result</p>
+<div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;The answer is: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">prime_factorization</span><span class="p">(</span><span class="mi">600851475143</span><span class="p">)))</span>
+</pre></div>
+<p>And the answer is <strong>6857</strong>.</p>
+<p>Few things to keep in mind</p>
+<ol class="arabic simple">
+<li>Except prime numbers, <strong>all</strong> whole numbers can be broken down into prime factors</li>
+<li>There's no need to check whether x is a prime number, it is guaranteed to be prime</li>
+</ol>
+<p>To explain this, take a look at the example below.</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">prime_factorization</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+</pre></div>
+<p>Of course, 100 can be factored into non-prime numbers like 4, 10, 20, 25, 50. But as
+I have explained in (1), all these non-prime numbers can be divided into prime number factors.</p>
+<p>4 = 2 * 2</p>
+<p>10 = 2 * 5</p>
+<p>20 = 2 * 2 * 5</p>
+<p>And so on. The fact that the program starts with smallest prime numbers (2, 3, 5, 7...) prevents
+non-prime factors.</p>
+<p>Lastly, note that it's x <strong>&lt;=</strong> n</p>
+<p><em>&lt;&lt; EOF</em></p>
+
+            </div><!-- /.entry-content -->
+                        <div class="comments">
+              <h3>Comments</h3>
+              <div id="disqus_thread"></div>
+              <script type="text/javascript">
+                var disqus_identifier = "posts/2013/Feb/largest-prime-factor/";
+                (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://ragingscholars.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+              </script>
+            </div>
+            
+
+        </div><!-- /.eleven.columns -->
+        
+     <div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+              <li><a href="../../../../pages/about-me.html">About Me</a></li>
+        </ul>
+
+<h4>Categories</h4>
+<ul>
+			<li><a href="../../../../category/code.html">Code!</a></li>
+			<li><a href="../../../../category/misc.html">Misc!</a></li>
+			<li><a href="../../../../category/security.html">Security!</a></li>
+	</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+		    <li class="tag-1"><a href="../../../../tag/algorithm.html">algorithm</a></li>
+		    <li class="tag-3"><a href="../../../../tag/misc.html">misc</a></li>
+		    <li class="tag-4"><a href="../../../../tag/rst.html">rst</a></li>
+		    <li class="tag-4"><a href="../../../../tag/rootkit.html">rootkit</a></li>
+		    <li class="tag-3"><a href="../../../../tag/security.html">security</a></li>
+		    <li class="tag-1"><a href="../../../../tag/math.html">math</a></li>
+		    <li class="tag-4"><a href="../../../../tag/pelican.html">pelican</a></li>
+		    <li class="tag-4"><a href="../../../../tag/.html"></a></li>
+		    <li class="tag-1"><a href="../../../../tag/project-euler.html">project euler</a></li>
+		    <li class="tag-3"><a href="../../../../tag/freebsd.html">freebsd</a></li>
+		    <li class="tag-1"><a href="../../../../tag/python.html">python</a></li>
+	</ul>
+
+
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>
+                    <br />
+                    All contents on this website are under 
+                    <a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">
+                        Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+                                <li><div class="btn info"><a href="http://www.weibo.com/bestwc" target="_blank">新浪微博</a></div></li>
+                
+                                <li><div class="btn danger"><a href="https://plus.google.com/100640905756801185675/posts/p/pub" target="_blank">Google+</a></div></li>
+                
+                                <li><div class="btn facebook"><a href="http://www.facebook.com/bestwc" target="_blank">Facebook</a></div></li>
+                
+                                <li><div class="btn twitter"><a href="https://twitter.com/lang_hai" target="_blank">Twitter</a></div></li>
+                
+                                <li><div class="btn primary"><a href="https://github.com/langhai" target="_blank">Github</a></div></li>
+                
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'ragingscholars';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  <script src="../../../../theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="../../../../theme/js/libs/gumby.min.js"></script>
+  <script src="../../../../theme/js/plugins.js"></script>
+
+</body>
+</html>

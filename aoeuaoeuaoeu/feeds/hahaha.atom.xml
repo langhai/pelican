@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Raging Scholars</title><link href="www.hailang.me/" rel="alternate"></link><link href="http://feed.hailang.me/feeds/hahaha.atom.xml" rel="self"></link><id>www.hailang.me/</id><updated>2013-10-02T10:02:00+08:00</updated><entry><title>With a different title</title><link href="www.hailang.me/posts/2013/Oct/test-article/" rel="alternate"></link><updated>2013-10-02T10:02:00+08:00</updated><author><name>Hai Lang</name></author><id>tag:www.hailang.me,2013-10-02:posts/2013/Oct/test-article/</id><summary type="html">&lt;p&gt;DEBUG: template list: ['!simple/archives.html', '!simple/article.html', '!simple/author.html', '!simple/base.html', '!simple/categories.html', '!simple/category.html', '!simple/gosquared.html', '!simple/index.html', '!simple/page.html', '!simple/pagination.html', '!simple/tag.html', '!simple/tags.html', '!simple/translations.html', 'archives.html', 'article.html', 'article_stub.html', 'author.html', 'base.html', 'categories.html', 'category.html', 'gosquared.html', 'index.html', 'page.html', 'pagination.html', 'tag.html', 'tags.html', 'translations.html']
+DEBUG: template list: ['!simple/archives.html', '!simple/article.html', '!simple/author.html', '!simple/base.html', '!simple/categories.html', '!simple/category.html', '!simple/gosquared.html', '!simple/index.html', '!simple/page.html', '!simple/pagination.html', '!simple/tag.html', '!simple/tags.html', '!simple/translations.html', 'archives.html', 'article.html', 'article_stub.html', 'author.html', 'base.html', 'categories.html', 'category.html', 'gosquared.html', 'index.html', 'page.html', 'pagination.html', 'tag.html', 'tags.html', 'translations.html']
+DEBUG: template list: ['!simple/archives.html', '!simple/article.html', '!simple/author.html', '!simple/base.html', '!simple/categories.html', '!simple/category.html', '!simple/gosquared.html', '!simple/index.html', '!simple/page.html', '!simple/pagination.html', '!simple/tag.html', '!simple/tags.html', '!simple/translations.html', 'archives.html', 'article.html', 'article_stub.html', 'author.html', 'base.html', 'categories.html', 'category.html', 'gosquared.html', 'index.html', 'page.html', 'pagination.html', 'tag.html', 'tags.html', 'translations.html']
+WARNING: there are 2 variants of &amp;quot;test-article&amp;quot;
+WARNING:     /home/bestwc/Developer/pelican/content/test.rst
+WARNING:     /home/bestwc/Developer/pelican/content/another.rst
+-&amp;gt; replacement of /home/bestwc/Developer/pelican/pelican/lib/python2.7/site-packages/pelican/themes/pelican-mockingbird/static with /home/bestwc/Developer/pelican/output/theme
+-&amp;gt; writing /home/bestwc/Developer/pelican/output/feeds/all.atom.xml
+-&amp;gt; writing /home/bestwc/Developer/pelican/output/feeds/hahaha.atom.xml
+-&amp;gt; writing /home/bestwc/Developer/pelican/output/feeds/all-en.atom.xml
+-&amp;gt; writing /home/bestwc/Developer/pelican/output/posts/2010/Oct/test-article/index.html
+-&amp;gt; writing /home/bestwc/Developer/pelican/output/posts/2010/Oct/test-article/index.html
+-&amp;gt; writing /home/bestwc/Developer/pelican/output/index.html
+-&amp;gt; writing /home/bestwc/Developer/pelican/output/tags.html
+-&amp;gt; writing /home/bestwc/Developer/pelican/output/categories.html
+-&amp;gt; writing /home/bestwc/Developer/pelican/output/archives.html
+-&amp;gt; writing /home/bestwc/Developer/pelican/output/tag/thas.html
+-&amp;gt; writing /home/bestwc/Developer/pelican/output/tag/foo.html
+-&amp;gt; writing /home/bestwc/Developer/pelican/output/tag/bar.html
+-&amp;gt; writing /home/bestwc/Developer/pelican/output/category/hahaha.html
+-&amp;gt; writing /home/bestwc/Developer/pelican/output/author/hai-lang.html
+-&amp;gt; writing /home/bestwc/Developer/pelican/output/pages/test-article.html&lt;/p&gt;
+</summary><category term="thas"></category><category term="foo"></category><category term="bar"></category></entry><entry><title>With a different title</title><link href="www.hailang.me/posts/2010/Oct/test-article/" rel="alternate"></link><updated>2010-10-02T10:02:00+08:00</updated><author><name>Hai Lang</name></author><id>tag:www.hailang.me,2010-10-02:posts/2010/Oct/test-article/</id><summary type="html">&lt;dl class="docutils"&gt;
+&lt;dt&gt;This is the content of this test article.&lt;/dt&gt;
+&lt;dd&gt;&lt;blockquote class="first"&gt;
+How about some code?&lt;/blockquote&gt;
+&lt;p class="last"&gt;How about this?&lt;/p&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;hahahahah&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Hello World!&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;!--  --&gt;
+&lt;p&gt;wtfffffff&lt;/p&gt;
+&lt;blockquote&gt;
+:::ruby
+tete&lt;/blockquote&gt;
+&lt;p&gt;This will be turned into :abbr:'HTML (HyperText Markup Language)'.&lt;/p&gt;
+</summary><category term="thas"></category><category term="foo"></category><category term="bar"></category></entry></feed>
